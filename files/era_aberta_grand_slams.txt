@@ -1,0 +1,221 @@
+2023	French Open	Novak Djokovic	Casper Ruud
+2023	Australian Open	Novak Djokovic	Stefanos Tsitsipas
+2022	U.S. Open	Carlos Alcaraz	Casper Ruud
+2022	Wimbledon	Novak Djokovic	Nick Kyrgios
+2022	French Open	Rafael Nadal	Casper Ruud
+2022	Australian Open	Rafael Nadal	Daniil Medvedev
+2021	U.S. Open	Daniil Medvedev	Novak Djokovic
+2021	Wimbledon	Novak Djokovic	Matteo Berrettini
+2021	French Open	Novak Djokovic	Stefanos Tsitsipas
+2021	Australian Open	Novak Djokovic	Daniil Medvedev
+2020	French Open	Rafael Nadal	Novak Djokovic
+2020	U.S. Open	Dominic Thiem	Alexander Zverev
+2020	Australian Open	Novak Djokovic	Dominic Thiem
+2019	U.S. Open	Rafael Nadal	Daniil Medvedev
+2019	Wimbledon	Novak Djokovic	Roger Federer
+2019	French Open	Rafael Nadal	Dominic Thiem
+2019	Australian Open	Novak Djokovic	Rafael Nadal
+2018	U.S. Open	Novak Djokovic	Juan Martin del Potro
+2018	Wimbledon	Novak Djokovic	Kevin Anderson
+2018	French Open	Rafael Nadal	Dominic Thiem
+2018	Australian Open	Roger Federer	Marin Cilic
+2017	U.S. Open	Rafael Nadal	Kevin Anderson
+2017	Wimbledon	Roger Federer	Marin Cilic
+2017	French Open	Rafael Nadal	Stan Wawrinka
+2017	Australian Open	Roger Federer	Rafael Nadal
+2016	U.S. Open	Stan Wawrinka	Novak Djokovic
+2016	Wimbledon	Andy Murray	Milos Raonic
+2016	French Open	Novak Djokovic	Andy Murray
+2016	Australian Open	Novak Djokovic	Andy Murray
+2015	U.S. Open	Novak Djokovic	Roger Federer
+2015	Wimbledon	Novak Djokovic	Roger Federer
+2015	French Open	Stan Wawrinka	Novak Djokovic
+2015	Australian Open	Novak Djokovic	Andy Murray
+2014	U.S. Open	Marin Cilic	Kei Nishikori
+2014	Wimbledon	Novak Djokovic	Roger Federer
+2014	French Open	Rafael Nadal	Novak Djokovic
+2014	Australian Open	Stan Wawrinka	Rafael Nadal
+2013	U.S. Open	Rafael Nadal	Novak Djokovic
+2013	Wimbledon	Andy Murray	Novak Djokovic
+2013	French Open	Rafael Nadal	David Ferrer
+2013	Australian Open	Novak Djokovic	Andy Murray
+2012	U.S. Open	Andy Murray	Novak Djokovic
+2012	Wimbledon	Roger Federer	Andy Murray
+2012	French Open	Rafael Nadal	Novak Djokovic
+2012	Australian Open	Novak Djokovic	Rafael Nadal
+2011	U.S. Open	Novak Djokovic	Rafael Nadal
+2011	Wimbledon	Novak Djokovic	Rafael Nadal
+2011	French Open	Rafael Nadal	Roger Federer
+2011	Australian Open	Novak Djokovic	Andy Murray
+2010	U.S. Open	Rafael Nadal	Novak Djokovic
+2010	Wimbledon	Rafael Nadal	Tomas Berdych
+2010	French Open	Rafael Nadal	Robin Soderling
+2010	Australian Open	Roger Federer	Andy Murray
+2009	U.S. Open	Juan Martin del Potro	Roger Federer
+2009	Wimbledon	Roger Federer	Andy Roddick
+2009	French Open	Roger Federer	Robin Soderling
+2009	Australian Open	Rafael Nadal	Roger Federer
+2008	U.S. Open	Roger Federer	Andy Murray
+2008	Wimbledon	Rafael Nadal	Roger Federer
+2008	French Open	Rafael Nadal	Roger Federer
+2008	Australian Open	Novak Djokovic	Jo-Wilfried Tsonga
+2007	U.S. Open	Roger Federer	Novak Djokovic
+2007	Wimbledon	Roger Federer	Rafael Nadal
+2007	French Open	Rafael Nadal	Roger Federer
+2007	Australian Open	Roger Federer	Fernando Gonzalez
+2006	U.S. Open	Roger Federer	Andy Roddick
+2006	Wimbledon	Roger Federer	Rafael Nadal
+2006	French Open	Rafael Nadal	Roger Federer
+2006	Australian Open	Roger Federer	Marcos Baghdatis
+2005	U.S. Open	Roger Federer	Andre Agassi
+2005	Wimbledon	Roger Federer	Andy Roddick
+2005	French Open	Rafael Nadal	Mariano Puerta
+2005	Australian Open	Marat Safin	Lleyton Hewitt
+2004	U.S. Open	Roger Federer	Lleyton Hewitt
+2004	Wimbledon	Roger Federer	Andy Roddick
+2004	French Open	Gaston Gaudio	Guillermo Coria
+2004	Australian Open	Roger Federer	Marat Safin
+2003	U.S. Open	Andy Roddick	Juan Carlos Ferrero
+2003	Wimbledon	Roger Federer	Mark Philippoussis
+2003	French Open	Juan Carlos Ferrero	Martin Verkerk
+2003	Australian Open	Andre Agassi	Rainer Schuettler
+2002	U.S. Open	Pete Sampras	Andre Agassi
+2002	Wimbledon	Lleyton Hewitt	David Nalbandian
+2002	French Open	Albert Costa	Juan Carlos Ferrero
+2002	Australian Open	Thomas Johannson	Marat Safin
+2001	U.S. Open	Lleyton Hewitt	Pete Sampras
+2001	Wimbledon	Goran Ivanisevic	Patrick Rafter
+2001	French Open	Gustavo Kuerten	Alex Corretja
+2001	Australian Open	Andre Agassi	Arnaud Clement
+2000	U.S. Open	Marat Safin	Pete Sampras
+2000	Wimbledon	Pete Sampras	Patrick Rafter
+2000	French Open	Gustavo Kuerten	Magnus Norman
+2000	Australian Open	Andre Agassi	Yevgeny Kafelnikov
+1999	U.S. Open	Andre Agassi	Todd Martin
+1999	Wimbledon	Pete Sampras	Andre Agassi
+1999	French Open	Andre Agassi	Andre Medvedev
+1999	Australian Open	Yevgeny Kafelnikov	Thomas Enqvist
+1998	U.S. Open	Patrick Rafter	Mark Philippoussis
+1998	Wimbledon	Pete Sampras	Goran Ivanisevic
+1998	French Open	Carlos Moya	Alex Corretja
+1998	Australian Open	Petr Korda	Marcelo Rios
+1997	U.S. Open	Patrick Rafter	Greg Rusedski
+1997	Wimbledon	Pete Sampras	Cedric Pioline
+1997	French Open	Gustavo Kuerten	Sergi Bruguera
+1997	Australian Open	Pete Sampras	Carlos Moya
+1996	U.S. Open	Pete Sampras	Michael Chang
+1996	Wimbledon	Richard Krajicek	MaliVai Washington
+1996	French Open	Yevgeny Kafelnikov	Michael Stich
+1996	Australian Open	Boris Becker	Michael Chang
+1995	U.S. Open	Pete Sampras	Andre Agassi
+1995	Wimbledon	Pete Sampras	Boris Becker
+1995	French Open	Thomas Muster	Michael Chang
+1995	Australian Open	Andre Agassi	Pete Sampras
+1994	U.S. Open	Andre Agassi	Michael Stich
+1994	Wimbledon	Pete Sampras	Goran Ivanisevic
+1994	French Open	Sergi Bruguera	Alberto Berasategui
+1994	Australian Open	Pete Sampras	Todd Martin
+1993	U.S. Open	Pete Sampras	Cedric Pioline
+1993	Wimbledon	Pete Sampras	Jim Courier
+1993	French Open	Sergi Bruguera	Jim Courier
+1993	Australian Open	Jim Courier	Stefan Edberg
+1992	U.S. Open	Stefan Edberg	Pete Sampras
+1992	Wimbledon	Andre Agassi	Goran Ivanisevic
+1992	French Open	Jim Courier	Petr Korda
+1992	Australian Open	Jim Courier	Stefan Edberg
+1991	U.S. Open	Stefan Edberg	Jim Courier
+1991	Wimbledon	Michael Stich	Boris Becker
+1991	French Open	Jim Courier	Andre Agassi
+1991	Australian Open	Boris Becker	Ivan Lendl
+1990	U.S. Open	Pete Sampras	Andre Agassi
+1990	Wimbledon	Stefan Edberg	Boris Becker
+1990	French Open	Andres Gomez	Andre Agassi
+1990	Australian Open	Ivan Lendl	Stefan Edberg
+1989	U.S. Open	Boris Becker	Ivan Lendl
+1989	Wimbledon	Boris Becker	Stefan Edberg
+1989	French Open	Michael Chang	Stefan Edberg
+1989	Australian Open	Ivan Lendl	Miloslav Mecir
+1988	U.S. Open	Mats Wilander	Ivan Lendl
+1988	Wimbledon	Stefan Edberg	Boris Becker
+1988	French Open	Mats Wilander	Henri Leconte
+1988	Australian Open	Mats Wilander	Pat Cash
+1987	U.S. Open	Ivan Lendl	Mats Wilander
+1987	Wimbledon	Pat Cash	Ivan Lendl
+1987	French Open	Ivan Lendl	Mats Wilander
+1987	Australian Open	Stefan Edberg	Pat Cash
+1986	U.S. Open	Ivan Lendl	Miloslav Mecir
+1986	Wimbledon	Boris Becker	Ivan Lendl
+1986	French Open	Ivan Lendl	Mikael Pernfors
+1985	Australian Open	Stefan Edberg	Mats Wilander
+1985	U.S. Open	Ivan Lendl	John McEnroe
+1985	Wimbledon	Boris Becker	Kevin Curren
+1985	French Open	Mats Wilander	Ivan Lendl
+1984	Australian Open	Mats Wilander	Kevin Curren
+1984	U.S. Open	John McEnroe	Ivan Lendl
+1984	Wimbledon	John McEnroe	Jimmy Connors
+1984	French Open	Ivan Lendl	John McEnroe
+1983	Australian Open	Mats Wilander	Ivan Lendl
+1983	U.S. Open	Jimmy Connors	Ivan Lendl
+1983	Wimbledon	John McEnroe	Chris Lewis
+1983	French Open	Yannick Noah	Mats Wilander
+1982	Australian Open	Johan Kriek	Steve Denton
+1982	U.S. Open	Jimmy Connors	Ivan Lendl
+1982	Wimbledon	Jimmy Connors	John McEnroe
+1982	French Open	Mats Wilander	Guillermo Vilas
+1981	Australian Open	Johan Kriek	Steve Denton
+1981	U.S. Open	John McEnroe	Bjorn Borg
+1981	Wimbledon	John McEnroe	Bjorn Borg
+1981	French Open	Bjorn Borg	Ivan Lendl
+1980	Australian Open	Brian Teacher	Kim Warwick
+1980	U.S. Open	John McEnroe	Bjorn Borg
+1980	Wimbledon	Bjorn Borg	John McEnroe
+1980	French Open	Bjorn Borg	Vitas Gerulaitis
+1979	Australian Open	Guillermo Vilas	John Sadri
+1979	U.S. Open	John McEnroe	Vitas Gerulaitis
+1979	Wimbledon	Bjorn Borg	Roscoe Tanner
+1979	French Open	Bjorn Borg	Victor Pecci
+1978	Australian Open	Guillermo Vilas	John Marks
+1978	U.S. Open	Jimmy Connors	Bjorn Borg
+1978	Wimbledon	Bjorn Borg	Jimmy Connors
+1978	French Open	Bjorn Borg	Guillermo Vilas
+1977	Australian Open	Vitas Gerulaitis	John Lloyd
+1977	U.S. Open	Guillermo Vilas	Jimmy Connors
+1977	Wimbledon	Bjorn Borg	Jimmy Connors
+1977	French Open	Guillermo Vilas	Brian Gottfried
+1977	Australian Open	Roscoe Tanner	Guillermo Vilas
+1976	U.S. Open	Jimmy Connors	Bjorn Borg
+1976	Wimbledon	Bjorn Borg	Ilie Nastase
+1976	French Open	Adriano Panatta	Harold Soloman
+1976	Australian Open	Mark Edmondson	John Newcombe
+1975	U.S. Open	Manuel Orantes	Jimmy Connors
+1975	Wimbledon	Arthur Ashe	Jimmy Connors
+1975	French Open	Bjorn Borg	Guillermo Vilas
+1975	Australian Open	John Newcombe	Jimmy Connors
+1974	U.S. Open	Jimmy Connors	Ken Rosewall
+1974	Wimbledon	Jimmy Connors	Ken Rosewall
+1974	French Open	Bjorn Borg	Manuel Orantes
+1974	Australian Open	Jimmy Connors	Phil Dent
+1973	U.S. Open	John Newcombe	Jan Kodes
+1973	Wimbledon	Jan Kodes	Alex Metreveli
+1973	French Open	Ilie Nastase	Nikola Pilic
+1973	Australian Open	John Newcombe	Onny Parun
+1972	U.S. Open	Ilie Nastase	Arthur Ashe
+1972	Wimbledon	Stan Smith	Ilie Nastase
+1972	French Open	Andres Gimeno	Patrick Proisy
+1972	Australian Open	Ken Rosewall	Mal Anderson
+1971	U.S. Open	Stan Smith	Jan Kodes
+1971	Wimbledon	John Newcombe	Stan Smith
+1971	French Open	Jan Kodes	Ilie Nastase
+1971	Australian Open	Ken Rosewall	Arthur Ashe
+1970	U.S. Open	Ken Rosewall	Tony Roche
+1970	Wimbledon	John Newcombe	Ken Rosewall
+1970	French Open	Jan Kodes	Zeljiko Franulovic
+1970	Australian Open	Arthur Ashe	Dick Crealy
+1969	U.S. Open	Rod Laver	Tony Roche
+1969	Wimbledon	Rod Laver	John Newcombe
+1969	French Open	Rod Laver	Ken Rosewall
+1969	Australian Open	Rod Laver	Andres Gimeno
+1968	U.S. Open	Arthur Ashe	Tom Okker
+1968	Wimbledon	Rod Laver	Tony Roche
+1968	French Open	Ken Rosewall	Rod Laver
+1968	Australian Open	Bill Bowrey	Juan Gisbert

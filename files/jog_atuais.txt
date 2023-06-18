@@ -1,0 +1,100 @@
+1	[Spain]	Carlos Alcaraz	6815	18
+2	[Russia]	Daniil Medvedev	6330	27
+3	[Serbia]	Novak Djokovic	5955	36
+4	[Norway]	Casper Ruud	4960	24
+5	[Greece]	Stefanos Tsitsipas	4775	24
+6	[Denmark]	Holger Rune	4375	20
+7	[Russia]	Andrey Rublev	4270	25
+8	[USA]	Taylor Fritz	3470	25
+9	[Italy]	Jannik Sinner	3435	21
+10	[Canada]	Felix Auger-Aliassime	3100	22
+11	[Russia]	Karen Khachanov	2945	27
+12	[USA]	Frances Tiafoe	2790	25
+13	[Great Britain]	Cameron Norrie	2565	27
+14	[Poland]	Hubert Hurkacz	2525	26
+15	[Spain]	Rafael Nadal	2445	37
+16	[Croatia]	Borna Coric	2410	26
+17	[USA]	Tommy Paul	2170	26
+18	[Italy]	Lorenzo Musetti	2040	21
+19	[Australia]	Alex De Minaur	1870	24
+20	[Italy]	Matteo Berrettini	1832	27
+21	[Spain]	Pablo Carreno Busta	1740	31
+22	[Croatia]	Marin Cilic	1510	34
+23	[Argentina]	Francisco Cerundolo	1485	24
+24	[Spain]	Roberto Bautista Agut	1485	35
+25	[Great Britain]	Daniel Evans	1480	33
+26	[Australia]	Nick Kyrgios	1465	28
+27	[Germany]	Alexander Zverev	1450	26
+28	[Germany]	Jan-Lennard Struff	1447	33
+29	[Bulgaria]	Grigor Dimitrov	1275	32
+30	[USA]	Sebastian Korda	1265	22
+31	[Netherlands]	Botic Van De Zandschulp	1215	27
+32	[Canada]	Denis Shapovalov	1210	24
+33	[Japan]	Yoshihito Nishioka	1181	27
+34	[Spain]	Alejandro Davidovich Fokina	1115	24
+35	[Chile]	Nicolas Jarry	1112	27
+36	[USA]	Ben Shelton	1095	20
+37	[Serbia]	Miomir Kecmanovic	1065	23
+38	[Spain]	Bernabe Zapata Miralles	1051	26
+39	[Netherlands]	Tallon Griekspoor	1034	26
+40	[France]	Ugo Humbert	1026	24
+41	[Czech Republic]	Jiri Lehecka	994	21
+42	[Argentina]	Sebastian Baez	990	22
+43	[Great Britain]	Andy Murray	975	36
+44	[USA]	Maxime Cressy	975	26
+45	[USA]	Brandon Nakashima	957	21
+46	[Finland]	Emil Ruusuvuori	956	24
+47	[France]	Adrian Mannarino	937	34
+48	[Italy]	Lorenzo Sonego	925	28
+49	[Argentina]	Tomas Martin Etcheverry	920	23
+50	[USA]	J.J. Wolf	915	24
+51	[Kazakhstan]	Alexander Bublik	915	25
+52	[France]	Richard Gasquet	901	36
+53	[Serbia]	Dusan Lajovic	899	32
+54	[China]	Yibing Wu	884	23
+55	[Great Britain]	Jack Draper	877	21
+56	[Sweden]	Mikael Ymer	876	24
+57	[Spain]	Roberto Carballes Baena	850	30
+58	[France]	Gregoire Barrere	850	29
+59	[USA]	Mackenzie McDonald	845	28
+60	[Serbia]	Laslo Djere	845	28
+61	[France]	Corentin Moutet	823	24
+62	[Russia]	Aslan Karatsev	818	29
+63	[France]	Arthur Fils	807	18
+64	[Argentina]	Pedro Cachin	803	28
+65	[Germany]	Yannick Hanfmann	791	31
+66	[France]	Benjamin Bonzi	783	26
+67	[Spain]	Albert Ramos-Vinolas	782	35
+68	[Australia]	Max Purcell	781	25
+69	[Australia]	Jason Kubler	777	30
+70	[France]	Constant Lestienne	769	31
+71	[China]	Zhizhen Zhang	752	26
+72	[Italy]	Marco Cecchinato	742	30
+73	[Belarus]	Ilya Ivashka	741	29
+74	[USA]	Christopher Eubanks	740	27
+75	[USA]	Marcos Giron	740	29
+76	[Australia]	Jordan Thompson	737	29
+77	[Australia]	Christopher O'Connell	737	29
+78	[France]	Arthur Rinderknech	735	27
+79	[Germany]	Daniel Altmaier	733	24
+80	[Portugal]	Nuno Borges	727	26
+81	[Spain]	Jaume Munar	725	26
+82	[France]	Luca Van Assche	725	19
+83	[Hungary]	Marton Fucsovics	720	31
+84	[Switzerland]	Marc-Andrea Huesler	719	26
+85	[Australia]	Alexei Popyrin	707	23
+86	[Slovakia]	Alex Molcan	705	25
+87	[Russia]	Alexander Shevchenko	703	22
+88	[France]	Quentin Halys	686	26
+89	[Switzerland]	Stan Wawrinka	684	38
+90	[USA]	John Isner	675	38
+91	[Colombia]	Daniel Elahi Galan	671	26
+92	[Austria]	Dominic Thiem	666	29
+93	[Serbia]	Filip Krajinovic	661	31
+94	[Peru]	Juan Pablo Varillas	661	27
+95	[Argentina]	Diego Schwartzman	660	30
+96	[Argentina]	Federico Coria	656	31
+97	[Australia]	Aleksandar Vukic	654	27
+98	[Brazil]	Thiago Monteiro	652	29
+99	[Russia]	Roman Safiullin	647	25
+100	[USA]	Jenson Brooksby	640	22
