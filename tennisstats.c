@@ -15,10 +15,16 @@ typedef struct tennisstats
     int age;
     int rank;
     int points;
+    int accpoints;
     int numOfAO;
     int numOfW;
     int numOfFO;
     int numOfUSO;
+    int prevStreakCount;
+    int streakYear;
+    int streakCount;
+    int mostTrophiesCount;
+    int mostTrophiesYear;
     struct tennisstats *left, *right;
 } TS;
 
@@ -27,7 +33,7 @@ TS *initialize()
     return NULL;
 }
 
-TS *createPlayer(char *name, char *country, bool retired, int titles, int subtitles, int age, int rank, int points)
+TS *createPlayer(char *name, char *country, bool retired, int titles, int subtitles, int age, int rank, int points, int streakYear, int streakCount, int prevStreakCount)
 {
     TS *newPlayer = (TS *)malloc(sizeof(TS));
     newPlayer->name = strdup(name);
@@ -38,12 +44,18 @@ TS *createPlayer(char *name, char *country, bool retired, int titles, int subtit
     newPlayer->age = age;
     newPlayer->rank = rank;
     newPlayer->points = points;
+    newPlayer->accpoints = points;
     newPlayer->numOfAO = 0;
     newPlayer->numOfW = 0;
     newPlayer->numOfFO = 0;
     newPlayer->numOfUSO = 0;
     newPlayer->left = NULL;
     newPlayer->right = NULL;
+    newPlayer->streakYear = streakYear;
+    newPlayer->streakCount = streakCount;
+    newPlayer->prevStreakCount = prevStreakCount;
+    newPlayer->mostTrophiesCount = 0;
+    newPlayer->mostTrophiesYear = 0;
     return newPlayer;
 }
 
@@ -129,6 +141,7 @@ TS *removePlayer(TS *ts, char *name)
 
 void printPlayer(TS *player)
 {
+    printf("------------------------\n");
     printf("Name: %s\n", player->name);
     printf("Country: %s\n", player->country);
     printf("Retired: %s\n", player->retired ? "Yes" : "No");
@@ -141,6 +154,8 @@ void printPlayer(TS *player)
     printf("Wimbledon Titles: %d\n", player->numOfW);
     printf("French Open Titles: %d\n", player->numOfFO);
     printf("US Open Titles: %d\n", player->numOfUSO);
+    printf("Most Trophies Year: %d\n", player->mostTrophiesYear);
+    printf("Most Trophies Count: %d\n", player->mostTrophiesCount);
     printf("------------------------\n");
 }
 
@@ -204,7 +219,7 @@ void printPlayersDescending(TS *ts, bool retired)
     printf("Total Players: %d\n", index);
 }
 
-void printPlayersByAccumulatedPoints(TS *ts)
+void printRetiredPlayersByAccumulatedPoints(TS *ts)
 {
     void calculateAccumulatedPoints(TS * ts, TS * *players, int *index)
     {
@@ -215,7 +230,7 @@ void printPlayersByAccumulatedPoints(TS *ts)
             if (ts->retired)
             {
                 int accumulatedPoints = ts->titles * 2000 + ts->subtitles * 1200;
-                ts->points = accumulatedPoints;
+                ts->accpoints = accumulatedPoints;
                 players[*index] = ts;
                 (*index)++;
             }
@@ -230,7 +245,7 @@ void printPlayersByAccumulatedPoints(TS *ts)
         TS *playerB = *(TS **)b;
 
         // Compare by accumulated points in descending order
-        return playerB->points - playerA->points;
+        return playerB->accpoints - playerA->accpoints;
     }
 
     TS *players[MAX_LINE_LENGTH];
@@ -244,7 +259,7 @@ void printPlayersByAccumulatedPoints(TS *ts)
     for (int i = 0; i < index; i++)
     {
         printf("Player Name: %s\n", players[i]->name);
-        printf("Accumulated Points: %d\n", players[i]->points);
+        printf("Accumulated Points: %d\n", players[i]->accpoints);
         printf("------------------------\n");
     }
 }
@@ -346,7 +361,7 @@ void addDataOne(TS **ts)
         if (existingPlayer == NULL)
         {
             // Insert the player into the binary tree
-            *ts = insertPlayer(*ts, createPlayer(name, country, false, 0, 0, atoi(age), atoi(rank), atoi(points)));
+            *ts = insertPlayer(*ts, createPlayer(name, country, false, 0, 0, atoi(age), atoi(rank), atoi(points), 0, 0, 0));
         }
     }
     fclose(filePtr);
@@ -381,12 +396,35 @@ void addDataTwo(TS **ts)
         if (existingWinner == NULL)
         {
             // Add a new player with the winner's data
-            *ts = insertPlayer(*ts, createPlayer(winner, "unknown", true, 1, 0, 0, 0, 0));
+            *ts = insertPlayer(*ts, createPlayer(winner, "unknown", true, 1, 0, 0, 0, 0, atoi(year), 1, 0));
             existingWinner = searchByName(*ts, winner); // Retrieve the newly inserted player
         }
         else
         {
             existingWinner->titles++;
+
+            // Update streak and previous streak if necessary
+            if (existingWinner->streakCount > existingWinner->prevStreakCount && existingWinner->streakYear != atoi(year))
+            {
+                existingWinner->prevStreakCount = existingWinner->streakCount;
+            }
+
+            if (existingWinner->streakYear == atoi(year))
+            {
+                existingWinner->streakCount++;
+            }
+            else
+            {
+                existingWinner->streakYear = atoi(year);
+                existingWinner->streakCount = 1;
+            }
+
+            // Check if the current streak is the new most trophies year
+            if (existingWinner->streakCount > existingWinner->mostTrophiesCount)
+            {
+                existingWinner->mostTrophiesCount = existingWinner->streakCount;
+                existingWinner->mostTrophiesYear = existingWinner->streakYear;
+            }
         }
 
         // Check if the runner-up player already exists in the binary tree
@@ -394,7 +432,7 @@ void addDataTwo(TS **ts)
         if (existingRunnerUp == NULL)
         {
             // Add a new player with the runner-up's data
-            *ts = insertPlayer(*ts, createPlayer(runnerUp, "unknown", true, 0, 1, 0, 0, 0));
+            *ts = insertPlayer(*ts, createPlayer(runnerUp, "unknown", true, 0, 1, 0, 0, 0, 0, 0, 0));
             existingRunnerUp = searchByName(*ts, runnerUp); // Retrieve the newly inserted player
         }
         else
@@ -424,20 +462,167 @@ void addDataTwo(TS **ts)
     fclose(filePtr);
 }
 
+void countCountriesHelper(TS *node, char ***countrySet, int *count)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    // Traverse left subtree
+    countCountriesHelper(node->left, countrySet, count);
+
+    // Add country to the set if it doesn't exist
+    bool countryExists = false;
+    for (int i = 0; i < *count; i++)
+    {
+        if (strcmp((*countrySet)[i], node->country) == 0)
+        {
+            countryExists = true;
+            break;
+        }
+    }
+
+    if (!countryExists)
+    {
+        (*countrySet) = realloc(*countrySet, (*count + 1) * sizeof(char *));
+        (*countrySet)[*count] = strdup(node->country);
+        (*count)++;
+    }
+
+    // Traverse right subtree
+    countCountriesHelper(node->right, countrySet, count);
+}
+
+int countCountries(TS *ts)
+{
+    char **countrySet = NULL;
+    int count = 0;
+
+    countCountriesHelper(ts, &countrySet, &count);
+
+    // Clean up the country set
+    for (int i = 0; i < count; i++)
+    {
+        free(countrySet[i]);
+    }
+    free(countrySet);
+
+    return count - 1; // unknown can't be considered
+}
+
+void playerWithFourStreaksHelper(TS *ts, bool retired, bool exists)
+{
+    if (ts == NULL)
+    {
+        return;
+    }
+
+    if (ts->left)
+    {
+        playerWithFourStreaksHelper(ts->left, retired, exists);
+    }
+
+    if (ts->mostTrophiesCount == 4 && ts->retired == retired)
+    {
+        printf("Player: %s\n", ts->name);
+        printf("Streak Year: %d\n", ts->mostTrophiesYear);
+        exists = true;
+    }
+
+    if (ts->right)
+    {
+        playerWithFourStreaksHelper(ts->right, retired, exists);
+    }
+}
+
+bool playerWithFourStreaks(TS *ts, bool retired)
+{
+    bool exists = false;
+    if (retired)
+    {
+        printf("Retired players with 4 Grand Slams:\n");
+        playerWithFourStreaksHelper(ts, retired, exists);
+    }
+    else
+    {
+        printf("Active players with 4 Grand Slams:\n");
+        playerWithFourStreaksHelper(ts, retired, exists);
+    }
+}
+
+void displayMenu()
+{
+    printf("Menu:\n");
+    printf("1. Print Active Players & Total Number of Active Players\n");
+    printf("2. Print Retired Players & Total Number of Retired Players\n");
+    printf("3. Print Retired Players by Accumulated Points\n");
+    printf("4. Print Active Players by Grand Slam Ranking\n");
+    printf("5. Print Retired Players with Four Grand Slams in a Single Year\n");
+    printf("6. Print Active Players with Four Grand Slams in a Single Year\n");
+    printf("7. Remove Active Players by Country\n");
+    printf("8. Quit\n");
+    printf("Enter your choice (1-8): ");
+}
+
+void handleMenuChoice(TS *ts, int choice)
+{
+    switch (choice)
+    {
+    case 1:
+        printPlayersDescending(ts, false);
+        break;
+    case 2:
+        printPlayersDescending(ts, true);
+        break;
+    case 3:
+        printRetiredPlayersByAccumulatedPoints(ts);
+        break;
+    case 4:
+        printPlayersByGrandSlamRanking(ts);
+        break;
+    case 5:
+        playerWithFourStreaks(ts, true);
+        break;
+    case 6:
+        playerWithFourStreaks(ts, false);
+        break;
+    case 7:
+    {
+        printf("Enter the country to remove active players (format should be = [country]): ");
+        char country[50];
+        scanf("%s", country);
+        removeActivePlayersByCountry(ts, country);
+        break;
+    }
+    case 8:
+        printf("Quitting...\n");
+        break;
+    default:
+        printf("Invalid choice. Please try again.\n");
+        break;
+    }
+}
+
 int main()
 {
     TS *ts = initialize();
     addDataOne(&ts); // initialize the tree with the data from jog_atuais.txt
     addDataTwo(&ts); // initialize the tree with the data from era_aberta_grand_slams.txt
 
-    // printPlayersDescending(ts, false); // - A.1 (active players)
-    // printPlayersDescending(ts, true);  // - A.2 (retired players)
+    int choice;
+    do
+    {
+        displayMenu();
+        scanf("%d", &choice);
+        printf("\n");
 
-    // printPlayersByAccumulatedPoints(ts); // C
-    // printPlayersByGrandSlamRanking(ts);  // D
-    // removeActivePlayersByCountry(ts, "[USA]"); - G
+        handleMenuChoice(ts, choice);
 
-    // left - B, E, F + create Menu Interface
+        printf("\n");
+    } while (choice != 8);
+
+    // left - B
     freePlayers(ts);
     return 0;
 }
