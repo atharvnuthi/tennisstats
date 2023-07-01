@@ -3,21 +3,12 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "arv.h"
-#include "add.h"
-
-int comparePlayersHelper(const void *a, const void *b)
-{
-    TS *playerA = *(TS **)a;
-    TS *playerB = *(TS **)b;
-
-    // Compare by titles in descending order
-    return playerB->titles - playerA->titles;
-}
+#include "arv_bin.h"
+#include "add_data.h"
 
 void printPlayersWithTitleDescending(TS *ts, bool retired)
 {
-    TS *players[MAX_LINE_LENGTH];
+    TS *players[countAllPlayers(ts)];
     int index = 0;
 
     void storePlayersDescendingHelper(TS * ts, TS * *players, int *index, bool retired)
@@ -39,6 +30,15 @@ void printPlayersWithTitleDescending(TS *ts, bool retired)
         }
     }
 
+    int comparePlayersHelper(const void *a, const void *b)
+    {
+        TS *playerA = *(TS **)a;
+        TS *playerB = *(TS **)b;
+
+        // Compare by titles in descending order
+        return playerB->titles - playerA->titles;
+    }
+
     // Store players in descending order of titles
     storePlayersDescendingHelper(ts, players, &index, retired);
 
@@ -56,21 +56,19 @@ void printPlayersWithTitleDescending(TS *ts, bool retired)
 
 void printRetiredPlayersByAccumulatedPoints(TS *ts)
 {
-    void calculateAccumulatedPoints(TS * ts, TS * *players, int *index)
+    void collectRetiredPlayers(TS * ts, TS * *players, int *index)
     {
         if (ts != NULL)
         {
-            calculateAccumulatedPoints(ts->left, players, index);
+            collectRetiredPlayers(ts->left, players, index);
 
             if (ts->retired)
             {
-                int accumulatedPoints = ts->titles * 2000 + ts->subtitles * 1200;
-                ts->accpoints = accumulatedPoints;
                 players[*index] = ts;
                 (*index)++;
             }
 
-            calculateAccumulatedPoints(ts->right, players, index);
+            collectRetiredPlayers(ts->right, players, index);
         }
     }
 
@@ -83,9 +81,9 @@ void printRetiredPlayersByAccumulatedPoints(TS *ts)
         return playerB->accpoints - playerA->accpoints;
     }
 
-    TS *players[MAX_LINE_LENGTH];
+    TS *players[countAllPlayers(ts)];
     int index = 0;
-    calculateAccumulatedPoints(ts, players, &index);
+    collectRetiredPlayers(ts, players, &index);
 
     // Sort players by accumulated points in descending order
     qsort(players, index, sizeof(TS *), comparePlayersHelper);
@@ -99,23 +97,21 @@ void printRetiredPlayersByAccumulatedPoints(TS *ts)
     }
 }
 
-void printPlayersByGrandSlamRanking(TS *ts)
+void printActivePlayersByGrandSlamRanking(TS *ts)
 {
-    void calculateGrandSlamRanking(TS * ts, TS * *players, int *index)
+    void collectActivePlayersWithTitles(TS * ts, TS * *players, int *index)
     {
         if (ts != NULL)
         {
-            calculateGrandSlamRanking(ts->left, players, index);
+            collectActivePlayersWithTitles(ts->left, players, index);
 
-            if (ts->rank > 0)
+            if (ts->retired == false && ts->titles > 0) // not retired & has grand slams
             {
-                int grandSlamRanking = ts->numOfAO + ts->numOfW + ts->numOfFO + ts->numOfUSO;
-                ts->rank = grandSlamRanking;
                 players[*index] = ts;
                 (*index)++;
             }
 
-            calculateGrandSlamRanking(ts->right, players, index);
+            collectActivePlayersWithTitles(ts->right, players, index);
         }
     }
 
@@ -125,12 +121,12 @@ void printPlayersByGrandSlamRanking(TS *ts)
         TS *playerB = *(TS **)b;
 
         // Compare by grand slam ranking in descending order
-        return playerB->rank - playerA->rank;
+        return playerB->titles - playerA->titles;
     }
 
-    TS *players[MAX_LINE_LENGTH];
+    TS *players[countAllPlayers(ts)];
     int index = 0;
-    calculateGrandSlamRanking(ts, players, &index);
+    collectActivePlayersWithTitles(ts, players, &index);
 
     // Sort players by grand slam ranking in descending order
     qsort(players, index, sizeof(TS *), comparePlayersHelper);
@@ -138,12 +134,9 @@ void printPlayersByGrandSlamRanking(TS *ts)
     // Print players in descending order of grand slam ranking (excluding players with ranking 0)
     for (int i = 0; i < index; i++)
     {
-        if (players[i]->rank > 0)
-        {
-            printf("Player Name: %s\n", players[i]->name);
-            printf("Grand Slam Ranking: %d\n", players[i]->rank);
-            printf("------------------------\n");
-        }
+        printf("Player Name: %s\n", players[i]->name);
+        printf("Grand Slam Ranking: %d\n", players[i]->titles);
+        printf("------------------------\n");
     }
 }
 
@@ -166,6 +159,110 @@ TS *removeActivePlayersByCountry(TS *ts, const char *country)
     return ts;
 }
 
+bool playerWithFourStreaks(TS *ts, bool retired)
+{
+    void playerWithFourStreaksHelper(TS * ts, bool retired, bool exists)
+    {
+        if (ts == NULL)
+        {
+            return;
+        }
+
+        if (ts->left)
+        {
+            playerWithFourStreaksHelper(ts->left, retired, exists);
+        }
+
+        if (ts->mostTrophiesCount == 4 && ts->retired == retired)
+        {
+            printf("Player: %s\n", ts->name);
+            printf("Streak Year: %d\n", ts->mostTrophiesYear);
+            exists = true;
+        }
+
+        if (ts->right)
+        {
+            playerWithFourStreaksHelper(ts->right, retired, exists);
+        }
+    }
+
+    bool exists = false;
+    if (retired)
+    {
+        printf("Retired players with 4 Grand Slams:\n");
+        playerWithFourStreaksHelper(ts, retired, exists);
+    }
+    else
+    {
+        printf("Active players with 4 Grand Slams:\n");
+        playerWithFourStreaksHelper(ts, retired, exists);
+    }
+}
+
+void displayMenu()
+{
+    printf("1. Print Active Players & Total Number of Active Players with Titles\n");
+    printf("2. Print Retired Players & Total Number of Retired Players with Titles\n");
+    printf("3. Print Retired Players with their Accumulated Points\n");
+    printf("4. Print Active Players by their Grand Slam Ranking\n");
+    printf("5. Print Retired Players with Four Grand Slams in a Single Year\n");
+    printf("6. Print Active Players with Four Grand Slams in a Single Year\n");
+    printf("7. Remove Active Players by their Country\n");
+    printf("8. Quit\n");
+    printf("Enter your choice (1-8): ");
+}
+void handleMenu(TS *ts)
+{
+    int choice;
+    do
+    {
+        displayMenu();
+        scanf("%d", &choice);
+        printf("\n");
+
+        switch (choice)
+        {
+        case 1:
+            printPlayersWithTitleDescending(ts, false);
+            break;
+        case 2:
+            printPlayersWithTitleDescending(ts, true);
+            break;
+        case 3:
+            printRetiredPlayersByAccumulatedPoints(ts);
+            break;
+        case 4:
+            printActivePlayersByGrandSlamRanking(ts);
+            break;
+        case 5:
+            playerWithFourStreaks(ts, true);
+            break;
+        case 6:
+            playerWithFourStreaks(ts, false);
+            break;
+        case 7:
+        {
+            printf("Enter the country to remove active players (format should be = [country]): ");
+            char country[50];
+            scanf("%s", country);
+            removeActivePlayersByCountry(ts, country);
+            break;
+        }
+        case 8:
+            printf("Quitting...\n");
+            break;
+        default:
+            printf("Invalid choice. Leaving...\n");
+            choice = 8;
+            break;
+        }
+
+        printf("\n");
+    } while (choice != 8);
+}
+
+// countCountries
+/*
 void countCountriesHelper(TS *node, char ***countrySet, int *count)
 {
     if (node == NULL)
@@ -214,109 +311,7 @@ int countCountries(TS *ts)
 
     return count - 1; // unknown can't be considered
 }
-
-void playerWithFourStreaksHelper(TS *ts, bool retired, bool exists)
-{
-    if (ts == NULL)
-    {
-        return;
-    }
-
-    if (ts->left)
-    {
-        playerWithFourStreaksHelper(ts->left, retired, exists);
-    }
-
-    if (ts->mostTrophiesCount == 4 && ts->retired == retired)
-    {
-        printf("Player: %s\n", ts->name);
-        printf("Streak Year: %d\n", ts->mostTrophiesYear);
-        exists = true;
-    }
-
-    if (ts->right)
-    {
-        playerWithFourStreaksHelper(ts->right, retired, exists);
-    }
-}
-
-bool playerWithFourStreaks(TS *ts, bool retired)
-{
-    bool exists = false;
-    if (retired)
-    {
-        printf("Retired players with 4 Grand Slams:\n");
-        playerWithFourStreaksHelper(ts, retired, exists);
-    }
-    else
-    {
-        printf("Active players with 4 Grand Slams:\n");
-        playerWithFourStreaksHelper(ts, retired, exists);
-    }
-}
-
-void displayMenu()
-{
-    printf("Menu:\n");
-    printf("1. Print Active Players & Total Number of Active Players with Titles\n");
-    printf("2. Print Retired Players & Total Number of Retired Players with Titles\n");
-    printf("3. Print Retired Players with their Accumulated Points\n");
-    printf("4. Print Active Players by their Grand Slam Ranking\n");
-    printf("5. Print Retired Players with Four Grand Slams in a Single Year\n");
-    printf("6. Print Active Players with Four Grand Slams in a Single Year\n");
-    printf("7. Remove Active Players by their Country\n");
-    printf("8. Quit\n");
-    printf("Enter your choice (1-8): ");
-}
-
-void handleMenu(TS *ts)
-{
-    int choice;
-    do
-    {
-        displayMenu();
-        scanf("%d", &choice);
-        printf("\n");
-
-        switch (choice)
-        {
-        case 1:
-            printPlayersWithTitleDescending(ts, false);
-            break;
-        case 2:
-            printPlayersWithTitleDescending(ts, true);
-            break;
-        case 3:
-            printRetiredPlayersByAccumulatedPoints(ts);
-            break;
-        case 4:
-            printPlayersByGrandSlamRanking(ts);
-            break;
-        case 5:
-            playerWithFourStreaks(ts, true);
-            break;
-        case 6:
-            playerWithFourStreaks(ts, false);
-            break;
-        case 7:
-        {
-            printf("Enter the country to remove active players (format should be = [country]): ");
-            char country[50];
-            scanf("%s", country);
-            removeActivePlayersByCountry(ts, country);
-            break;
-        }
-        case 8:
-            printf("Quitting...\n");
-            break;
-        default:
-            printf("Invalid choice. Please try again.\n");
-            break;
-        }
-
-        printf("\n");
-    } while (choice != 8);
-}
+*/
 
 int main()
 {
@@ -326,7 +321,12 @@ int main()
     addDataTwo(&ts); // initialize the tree with the data from era_aberta_grand_slams.txt
 
     // Main
+    printf("---- Welcome to Tennis Stats! ----\n");
     handleMenu(ts);
+
+    // Extra
+    // printAllPlayers(ts);
+    // printf("%d", countAllPlayers(ts));
 
     // left - B
 

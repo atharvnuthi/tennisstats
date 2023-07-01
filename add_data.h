@@ -17,7 +17,7 @@ void addDataOne(TS **ts)
             fileLine[len - 1] = '\0';
         }
 
-        char *rank = strtok(fileLine, "\t");
+        char *currentRank = strtok(fileLine, "\t");
         char *country = strtok(NULL, "\t");
         char *name = strtok(NULL, "\t");
         char *points = strtok(NULL, "\t");
@@ -28,10 +28,27 @@ void addDataOne(TS **ts)
         if (existingPlayer == NULL)
         {
             // Insert the player into the binary tree
-            *ts = insertPlayer(*ts, createPlayer(name, country, false, 0, 0, atoi(age), atoi(rank), atoi(points), 0, 0, 0));
+            *ts = insertPlayer(*ts, createPlayer(name, country, false, 0, 0, atoi(age), atoi(currentRank), atoi(points), 0, 0, 0));
         }
     }
     fclose(filePtr);
+}
+
+void calculateAccumulatedPoints(TS *ts)
+{
+    if (ts == NULL)
+    {
+        return;
+    }
+
+    calculateAccumulatedPoints(ts->left);
+
+    if (ts->retired)
+    {
+        ts->accpoints = ts->titles * 2000 + ts->subtitles * 1200;
+    }
+
+    calculateAccumulatedPoints(ts->right);
 }
 
 void addDataTwo(TS **ts)
@@ -127,4 +144,7 @@ void addDataTwo(TS **ts)
     }
 
     fclose(filePtr);
+
+    // Calculate accumulated points for players with retired = true
+    calculateAccumulatedPoints(*ts);
 }
