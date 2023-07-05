@@ -1,3 +1,9 @@
+// strlen - length of a string
+// strtok - split a string into tokens
+// atoi - convert a string to an integer
+// fgets - read a line from a file
+// fopen - open a file
+
 void addDataOne(TS **ts)
 {
     FILE *filePtr = fopen("files/jog_atuais.txt", "r");
@@ -11,10 +17,10 @@ void addDataOne(TS **ts)
     while (fgets(fileLine, MAX_LINE_LENGTH, filePtr) != NULL)
     {
         // Remove newline character at the end, if present
-        size_t len = strlen(fileLine);
-        if (fileLine[len - 1] == '\n')
+        int len = strlen(fileLine);
+        if (fileLine[len - 1] == '\n') // end of line
         {
-            fileLine[len - 1] = '\0';
+            fileLine[len - 1] = '\0'; // null of line
         }
 
         char *currentRank = strtok(fileLine, "\t");
@@ -23,18 +29,12 @@ void addDataOne(TS **ts)
         char *points = strtok(NULL, "\t");
         char *age = strtok(NULL, "\t");
 
-        // Check if the current player already exists in the binary tree
-        TS *existingPlayer = searchByName(*ts, name);
-        if (existingPlayer == NULL)
-        {
-            // Insert the player into the binary tree
-            *ts = insertPlayer(*ts, createPlayer(name, country, false, 0, 0, atoi(age), atoi(currentRank), atoi(points), 0, 0, 0));
-        }
+        *ts = insertPlayer(*ts, createPlayer(name, country, false, 0, 0, atoi(age), atoi(currentRank), atoi(points), 0, 0));
     }
     fclose(filePtr);
 }
 
-void calculateAccumulatedPoints(TS *ts)
+void calculateAccumulatedPoints(TS *ts) // calculate the accumulated points of a player after retirement
 {
     if (ts == NULL)
     {
@@ -45,7 +45,9 @@ void calculateAccumulatedPoints(TS *ts)
 
     if (ts->retired)
     {
-        ts->accpoints = ts->titles * 2000 + ts->subtitles * 1200;
+        int points = ts->titles * 2000 + ts->subtitles * 1200;
+        ts->points = -1;
+        ts->accpoints = points;
     }
 
     calculateAccumulatedPoints(ts->right);
@@ -64,7 +66,7 @@ void addDataTwo(TS **ts)
     while (fgets(fileLine, MAX_LINE_LENGTH, filePtr) != NULL)
     {
         // Remove newline character at the end, if present
-        size_t len = strlen(fileLine);
+        int len = strlen(fileLine);
         if (fileLine[len - 1] == '\n')
         {
             fileLine[len - 1] = '\0';
@@ -72,16 +74,17 @@ void addDataTwo(TS **ts)
 
         char *year = strtok(fileLine, "\t");
         char *tournament = strtok(NULL, "\t");
-        char *winner = strtok(NULL, "\t");
-        char *runnerUp = strtok(NULL, "\t");
+        char *winner = strtok(NULL, "\t");   // winner's name
+        char *runnerUp = strtok(NULL, "\t"); // runner-up's name
 
         // Check if the winner player already exists in the binary tree
         TS *existingWinner = searchByName(*ts, winner);
         if (existingWinner == NULL)
         {
             // Add a new player with the winner's data
-            *ts = insertPlayer(*ts, createPlayer(winner, "unknown", true, 1, 0, 0, 0, 0, atoi(year), 1, 0));
-            existingWinner = searchByName(*ts, winner); // Retrieve the newly inserted player
+            TS *newWinner = createPlayer(winner, "unknown", true, 1, 0, -1, -1, 0, atoi(year), 1);
+            *ts = insertPlayer(*ts, newWinner);
+            existingWinner = newWinner;
         }
         else
         {
@@ -116,8 +119,9 @@ void addDataTwo(TS **ts)
         if (existingRunnerUp == NULL)
         {
             // Add a new player with the runner-up's data
-            *ts = insertPlayer(*ts, createPlayer(runnerUp, "unknown", true, 0, 1, 0, 0, 0, 0, 0, 0));
-            existingRunnerUp = searchByName(*ts, runnerUp); // Retrieve the newly inserted player
+            TS *newRunnerUp = createPlayer(runnerUp, "unknown", true, 0, 1, -1, -1, 0, 0, 0);
+            *ts = insertPlayer(*ts, newRunnerUp);
+            existingRunnerUp = newRunnerUp;
         }
         else
         {

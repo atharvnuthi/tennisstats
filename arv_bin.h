@@ -1,3 +1,6 @@
+// strcmp - compare two strings lexicographically , 0/-1/1
+// strdup - copy a string to a new memory location and return a pointer to it
+
 #define MAX_LINE_LENGTH 100
 
 typedef struct tennisstats
@@ -13,7 +16,7 @@ typedef struct tennisstats
     int points;
     int accpoints; // points accumulated after retirement, active player will have the same value as points
 
-    // number of titles
+    // titles and grand slams
     int titles;    // winner of the tournament
     int subtitles; // runner-up of the tournament
     int numOfAO;   // australian open titles
@@ -30,7 +33,7 @@ typedef struct tennisstats
     int streakYear;
     int streakCount;
 
-    struct tennisstats *left, *right;
+    struct tennisstats *left, *right; // left and right child
 } TS;
 
 TS *initialize()
@@ -38,7 +41,7 @@ TS *initialize()
     return NULL;
 }
 
-TS *createPlayer(char *name, char *country, bool retired, int titles, int subtitles, int age, int currentRank, int points, int streakYear, int streakCount, int prevStreakCount)
+TS *createPlayer(char *name, char *country, bool retired, int titles, int subtitles, int age, int currentRank, int points, int streakYear, int streakCount)
 {
     TS *newPlayer = (TS *)malloc(sizeof(TS));
     newPlayer->name = strdup(name);
@@ -50,15 +53,18 @@ TS *createPlayer(char *name, char *country, bool retired, int titles, int subtit
     newPlayer->currentRank = currentRank;
     newPlayer->points = points;
     newPlayer->accpoints = points;
+
     newPlayer->numOfAO = 0;
     newPlayer->numOfW = 0;
     newPlayer->numOfFO = 0;
     newPlayer->numOfUSO = 0;
-    newPlayer->streakYear = streakYear;
-    newPlayer->streakCount = streakCount;
-    newPlayer->prevStreakCount = prevStreakCount;
     newPlayer->mostTrophiesCount = 0;
     newPlayer->mostTrophiesYear = 0;
+    newPlayer->prevStreakCount = 0;
+
+    newPlayer->streakYear = streakYear;
+    newPlayer->streakCount = streakCount;
+
     newPlayer->left = NULL;
     newPlayer->right = NULL;
     return newPlayer;
@@ -70,20 +76,20 @@ TS *insertPlayer(TS *ts, TS *player)
     {
         return player;
     }
-    if (strcmp(player->name, ts->name) < 0)
+    if (strcmp(player->name, ts->name) < 0) // player name is lexicographically smaller than ts->name
     {
         ts->left = insertPlayer(ts->left, player);
     }
     else
     {
-        ts->right = insertPlayer(ts->right, player);
+        ts->right = insertPlayer(ts->right, player); // player name is lexicographically larger than ts->name
     }
     return ts;
 }
 
 TS *searchByName(TS *ts, char *name)
 {
-    if (ts == NULL || strcmp(name, ts->name) == 0)
+    if (ts == NULL || strcmp(name, ts->name) == 0) // player name is lexicographically equal to ts->name
     {
         return ts;
     }
@@ -108,7 +114,7 @@ TS *removePlayer(TS *ts, char *name)
     {
         ts->right = removePlayer(ts->right, name);
     }
-    else
+    else // player name is lexicographically equal to ts->name
     {
         if (ts->left == NULL && ts->right == NULL)
         {
@@ -133,12 +139,12 @@ TS *removePlayer(TS *ts, char *name)
             free(ts);
             return temp;
         }
-        else
+        else // both left and right are not NULL
         {
             TS *temp = ts->right;
             while (temp->left != NULL)
             {
-                temp = temp->left;
+                temp = temp->left; // find the leftmost node in the right subtree
             }
             free(ts->name);
             free(ts->country);
@@ -160,7 +166,7 @@ TS *removePlayer(TS *ts, char *name)
             ts->streakCount = temp->streakCount;
             ts->mostTrophiesCount = temp->mostTrophiesCount;
             ts->mostTrophiesYear = temp->mostTrophiesYear;
-            ts->right = removePlayer(ts->right, temp->name);
+            ts->right = removePlayer(ts->right, temp->name); // remove the leftmost node which is a duplicate in the right subtree
         }
     }
     return ts;
