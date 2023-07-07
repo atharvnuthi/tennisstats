@@ -4,7 +4,9 @@
 // fgets - read a line from a file
 // fopen - open a file
 
-void addDataOne(TS **ts)
+#define MAX_LINE_LENGTH 100
+
+void addDataOne(TS **ts, int t)
 {
     FILE *filePtr = fopen("files/jog_atuais.txt", "r");
     char fileLine[MAX_LINE_LENGTH];
@@ -29,31 +31,30 @@ void addDataOne(TS **ts)
         char *points = strtok(NULL, "\t");
         char *age = strtok(NULL, "\t");
 
-        *ts = insertPlayer(*ts, createPlayer(name, country, false, 0, 0, atoi(age), atoi(currentRank), atoi(points), 0, 0));
+        *ts = insertPlayer(*ts, createPlayer(name, country, false, 0, 0, atoi(age), atoi(currentRank), atoi(points), 0, 0), t);
     }
     fclose(filePtr);
 }
 
-void calculateAccumulatedPoints(TS *ts) // calculate the accumulated points of a player after retirement
+void calculateAccumulatedPoints(TS *ts) // calculate the accumulated points of a player after retirement -logic in b-tree
 {
-    if (ts == NULL)
+    if (!ts)
     {
         return;
     }
-
-    calculateAccumulatedPoints(ts->left);
-
-    if (ts->retired)
+    for (int i = 0; i < ts->nKeys; i++)
     {
-        int points = ts->titles * 2000 + ts->subtitles * 1200;
-        ts->points = -1;
-        ts->accpoints = points;
+        calculateAccumulatedPoints(ts->childs[i]);
+        if (ts->aKeys[i]->retired)
+        {
+            int points = ts->aKeys[i]->titles * 2000 + ts->aKeys[i]->subtitles * 1200;
+            ts->aKeys[i]->points = -1;
+            ts->aKeys[i]->accpoints = points;
+        }
     }
-
-    calculateAccumulatedPoints(ts->right);
 }
 
-void addDataTwo(TS **ts)
+void addDataTwo(TS **ts, int t)
 {
     FILE *filePtr = fopen("files/era_aberta_grand_slams.txt", "r");
     char fileLine[MAX_LINE_LENGTH];
@@ -78,12 +79,12 @@ void addDataTwo(TS **ts)
         char *runnerUp = strtok(NULL, "\t"); // runner-up's name
 
         // Check if the winner player already exists in the binary tree
-        TS *existingWinner = searchByName(*ts, winner);
+        P *existingWinner = searchByName(*ts, winner);
         if (existingWinner == NULL)
         {
             // Add a new player with the winner's data
-            TS *newWinner = createPlayer(winner, "unknown", true, 1, 0, -1, -1, 0, atoi(year), 1);
-            *ts = insertPlayer(*ts, newWinner);
+            P *newWinner = createPlayer(winner, "[Unknown]", true, 1, 0, -1, -1, 0, atoi(year), 1);
+            *ts = insertPlayer(*ts, newWinner, t);
             existingWinner = newWinner;
         }
         else
@@ -115,12 +116,12 @@ void addDataTwo(TS **ts)
         }
 
         // Check if the runner-up player already exists in the binary tree
-        TS *existingRunnerUp = searchByName(*ts, runnerUp);
+        P *existingRunnerUp = searchByName(*ts, runnerUp);
         if (existingRunnerUp == NULL)
         {
             // Add a new player with the runner-up's data
-            TS *newRunnerUp = createPlayer(runnerUp, "unknown", true, 0, 1, -1, -1, 0, 0, 0);
-            *ts = insertPlayer(*ts, newRunnerUp);
+            P *newRunnerUp = createPlayer(runnerUp, "[Unknown]", true, 0, 1, -1, -1, 0, 0, 0);
+            *ts = insertPlayer(*ts, newRunnerUp, t);
             existingRunnerUp = newRunnerUp;
         }
         else
