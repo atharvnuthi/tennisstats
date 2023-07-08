@@ -44,13 +44,16 @@ void calculateAccumulatedPoints(TS *ts) // calculate the accumulated points of a
     }
     for (int i = 0; i < ts->nKeys; i++)
     {
-        calculateAccumulatedPoints(ts->childs[i]);
         if (ts->aKeys[i]->retired)
         {
             int points = ts->aKeys[i]->titles * 2000 + ts->aKeys[i]->subtitles * 1200;
             ts->aKeys[i]->points = -1;
             ts->aKeys[i]->accpoints = points;
         }
+    }
+    for (int j = 0; j <= ts->nKeys; j++)
+    {
+        calculateAccumulatedPoints(ts->childs[j]);
     }
 }
 

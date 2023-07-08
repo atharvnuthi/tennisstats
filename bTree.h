@@ -62,7 +62,6 @@ typedef struct TS
     bool leaf;          // Is leaf or not
     P **aKeys;          // Array of players
     struct TS **childs; // Children pointers (array of pointers)
-    struct TS *parent;  // Parent pointer
 } TS;
 
 int countAllPlayers(TS *ts)
@@ -84,37 +83,6 @@ int countAllPlayers(TS *ts)
 TS *initialize()
 {
     return NULL;
-}
-
-void freePlayer(P *p)
-{
-    if (p)
-    {
-        free(p->name);
-        free(p->country);
-        free(p);
-    }
-}
-
-void freeAllPlayers(TS *ts)
-{
-    if (ts)
-    {
-        if (!ts->leaf)
-        {
-            for (int i = 0; i <= ts->nKeys; i++)
-            {
-                freeAllPlayers(ts->childs[i]);
-            }
-        }
-        for (int i = 0; i < ts->nKeys; i++)
-        {
-            freePlayer(ts->aKeys[i]);
-        }
-        free(ts->aKeys);
-        free(ts->childs);
-        free(ts);
-    }
 }
 
 P *searchByName(TS *ts, char *name)
@@ -178,7 +146,6 @@ TS *create(int t)
     ts->leaf = true;
     ts->aKeys = (P **)malloc(sizeof(P *) * ((2 * t) - 1));
     ts->childs = (TS **)malloc(sizeof(TS *) * (2 * t));
-    ts->parent = NULL;
     for (int i = 0; i < (2 * t); i++)
     {
         ts->childs[i] = NULL;
@@ -275,4 +242,35 @@ TS *insertPlayer(TS *ts, P *p, int t)
     }
     ts = insertPlayerHelper(ts, p, t);
     return ts;
+}
+
+void freePlayer(P *p)
+{
+    if (p)
+    {
+        free(p->name);
+        free(p->country);
+        free(p);
+    }
+}
+
+void freeAllPlayers(TS *ts)
+{
+    if (ts)
+    {
+        if (!ts->leaf)
+        {
+            for (int i = 0; i <= ts->nKeys; i++)
+            {
+                freeAllPlayers(ts->childs[i]);
+            }
+        }
+        for (int i = 0; i < ts->nKeys; i++)
+        {
+            freePlayer(ts->aKeys[i]);
+        }
+        free(ts->aKeys);
+        free(ts->childs);
+        free(ts);
+    }
 }
