@@ -274,3 +274,241 @@ void freeAllPlayers(TS *ts)
         free(ts);
     }
 }
+
+TS *freeTS(TS *ts)
+{
+    if (ts)
+    {
+        if (!ts->leaf)
+        {
+            for (int i = 0; i <= ts->nKeys; i++)
+                freeTS(ts->childs[i]);
+        }
+        for (int i = 0; i < ts->nKeys; i++)
+        {
+            free(ts->aKeys[i]->name);
+            free(ts->aKeys[i]->country);
+            free(ts->aKeys[i]);
+        }
+        free(ts->aKeys);
+        free(ts->childs);
+        free(ts);
+        return NULL;
+    }
+}
+
+TS *freeTSRemove(TS *ts)
+{
+    for (int i = 0; i < ts->nKeys; ++i)
+    {
+        free(ts->aKeys[i]->name);
+        free(ts->aKeys[i]->country);
+        free(ts->aKeys[i]);
+    }
+    free(ts->aKeys);
+    free(ts->childs);
+    free(ts);
+    return NULL;
+}
+
+TS *removePlayerHelper(TS *ts, char *name, int t, P *p)
+{
+    if (!ts)
+        return ts;
+    int i;
+    for (i = 0; i < ts->nKeys && strcmp(name, ts->aKeys[i]->name) > 0; i++)
+        ;
+    if (i < ts->nKeys && strcmp(name, ts->aKeys[i]->name) == 0)
+    { // CASOS 1, 2A, 2B e 2C
+        if (ts->leaf)
+        { // CASO 1
+            int j;
+            for (j = i; j < ts->nKeys - 1; j++)
+                ts->aKeys[j] = ts->aKeys[j + 1];
+            ts->nKeys--;
+            if (!ts->nKeys)
+            {
+                freeTS(ts);
+                ts = NULL;
+            }
+            return ts;
+        }
+        if (!ts->leaf && ts->childs[i]->nKeys >= t)
+        { // CASO 2A
+            TS *y = ts->childs[i];
+            while (!y->leaf)
+                y = y->childs[y->nKeys];
+            P *temp = y->aKeys[y->nKeys - 1];
+            ts->childs[i] = removePlayerHelper(ts->childs[i], temp->name, t, p);
+            ts->aKeys[i] = temp;
+            return ts;
+        }
+        if (!ts->leaf && ts->childs[i + 1]->nKeys >= t)
+        { // CASO 2B
+            TS *y = ts->childs[i + 1];
+            while (!y->leaf)
+                y = y->childs[0];
+            P *temp = y->aKeys[0];
+            y = removePlayerHelper(ts->childs[i + 1], temp->name, t, p);
+            ts->aKeys[i] = temp;
+            return ts;
+        }
+        if (!ts->leaf && ts->childs[i + 1]->nKeys == t - 1 && ts->childs[i]->nKeys == t - 1)
+        { // CASO 2C
+            TS *y = ts->childs[i];
+            TS *z = ts->childs[i + 1];
+            y->aKeys[y->nKeys] = p;
+            int j;
+            for (j = 0; j < t - 1; j++)
+                y->aKeys[t + j] = z->aKeys[j];
+            for (j = 0; j < t; j++)
+            {
+                y->childs[t + j] = z->childs[j];
+                z->childs[j] = NULL;
+            }
+            y->nKeys = 2 * t - 1;
+            for (j = i; j < ts->nKeys - 1; j++)
+                ts->aKeys[j] = ts->aKeys[j + 1];
+            for (j = i + 1; j < ts->nKeys; j++)
+                ts->childs[j] = ts->childs[j + 1];
+            ts->childs[j] = NULL;
+            freeTSRemove(z);
+            ts->nKeys--;
+            if (!ts->nKeys)
+            {
+                TS *temp = ts;
+                ts = ts->childs[0];
+                temp->childs[0] = NULL;
+                freeTSRemove(temp);
+                ts = removePlayerHelper(ts, name, t, p);
+            }
+            else
+                ts->childs[i] = removePlayerHelper(ts->childs[i], name, t, p);
+            return ts;
+        }
+    }
+
+    TS *y = ts->childs[i], *z = NULL;
+    if (y->nKeys == t - 1)
+    { // CASOS 3A e 3B
+        if ((i < ts->nKeys) && (ts->childs[i + 1]->nKeys >= t))
+        { // CASO 3A
+            z = ts->childs[i + 1];
+            y->aKeys[t - 1] = ts->aKeys[i];
+            y->nKeys++;
+            ts->aKeys[i] = z->aKeys[0];
+            int j;
+            for (j = 0; j < z->nKeys - 1; j++)
+                z->aKeys[j] = z->aKeys[j + 1];
+            y->childs[y->nKeys] = z->childs[0];
+            for (j = 0; j < z->nKeys; j++)
+                z->childs[j] = z->childs[j + 1];
+            z->nKeys--;
+            ts->childs[i] = removePlayerHelper(ts->childs[i], name, t, p);
+            return ts;
+        }
+        if ((i > 0) && (!z) && (ts->childs[i - 1]->nKeys >= t))
+        { // CASO 3A
+            z = ts->childs[i - 1];
+            int j;
+            for (j = y->nKeys; j > 0; j--)
+                y->aKeys[j] = y->aKeys[j - 1];
+            for (j = y->nKeys + 1; j > 0; j--)
+                y->childs[j] = y->childs[j - 1];
+            y->aKeys[0] = ts->aKeys[i - 1];
+            y->nKeys++;
+            ts->aKeys[i - 1] = z->aKeys[z->nKeys - 1];
+            y->childs[0] = z->childs[z->nKeys];
+            z->nKeys--;
+            ts->childs[i] = removePlayerHelper(y, name, t, p);
+            return ts;
+        }
+        if (!z)
+        { // CASO 3B
+            if (i < ts->nKeys && ts->childs[i + 1]->nKeys == t - 1)
+            {
+                z = ts->childs[i + 1];
+                y->aKeys[t - 1] = ts->aKeys[i];
+                y->nKeys++;
+                int j;
+                for (j = 0; j < t - 1; j++)
+                {
+                    y->aKeys[t + j] = z->aKeys[j];
+                    y->nKeys++;
+                }
+                if (!y->leaf)
+                {
+                    for (j = 0; j < t; j++)
+                    {
+                        y->childs[t + j] = z->childs[j];
+                        z->childs[j] = NULL;
+                    }
+                }
+                freeTS(z);
+                for (j = i; j < ts->nKeys - 1; j++)
+                {
+                    ts->aKeys[j] = ts->aKeys[j + 1];
+                    ts->childs[j + 1] = ts->childs[j + 2];
+                }
+                ts->childs[ts->nKeys] = NULL;
+                ts->nKeys--;
+                if (!ts->nKeys)
+                {
+                    TS *temp = ts;
+                    ts = ts->childs[0];
+                    temp->childs[0] = NULL;
+                    freeTS(temp);
+                }
+                ts = removePlayerHelper(ts, name, t, p);
+                return ts;
+            }
+            if ((i > 0) && (ts->childs[i - 1]->nKeys == t - 1))
+            {
+                z = ts->childs[i - 1];
+                if (i == ts->nKeys)
+                    z->aKeys[t - 1] = ts->aKeys[i - 1];
+                else
+                    z->aKeys[t - 1] = ts->aKeys[i];
+                z->nKeys++;
+                int j;
+                for (j = 0; j < t - 1; j++)
+                {
+                    z->aKeys[t + j] = y->aKeys[j];
+                    z->nKeys++;
+                }
+                if (!z->leaf)
+                {
+                    for (j = 0; j < t; j++)
+                    {
+                        z->childs[t + j] = y->childs[j];
+                        y->childs[j] = NULL;
+                    }
+                }
+                freeTS(y);
+                ts->childs[ts->nKeys] = NULL;
+                ts->nKeys--;
+                if (!ts->nKeys)
+                {
+                    TS *temp = ts;
+                    ts = ts->childs[0];
+                    temp->childs[0] = NULL;
+                    freeTS(temp);
+                }
+                else
+                    ts->childs[i - 1] = z;
+                ts = removePlayerHelper(ts, name, t, p);
+                return ts;
+            }
+        }
+    }
+    ts->childs[i] = removePlayerHelper(ts->childs[i], name, t, p);
+    return ts;
+}
+
+TS *removePlayerByName(TS *ts, char *name, int t)
+{
+    P *player = searchByName(ts, name);
+    if (!ts || !player)
+        return ts;
+    return removePlayerHelper(ts, name, t, player);
+}

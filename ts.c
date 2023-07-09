@@ -258,6 +258,41 @@ void printActiveCompatriotsWithOneTitleAndSameAge(TS *ts)
     findCompatriotsWithOneTitleAndSameAge(players, index);
 }
 
+void removeActivePlayersByCountry(TS *ts, char *country, int t)
+{
+    void removePlayersByCountryHelper(TS * ts, char *country, int t)
+    {
+        if (ts == NULL)
+        {
+            return;
+        }
+
+        for (int i = 0; i < ts->nKeys; i++)
+        {
+            P *player = ts->aKeys[i];
+
+            if (!player->retired && strcmp(player->country, country) == 0)
+            {
+                removePlayerByName(ts, player->name, t);
+                printf("Removed: %s \n", player->name); // mostrar que está funcionando
+                i--;                                    // Adjust the index after removal
+            }
+        }
+
+        for (int j = 0; j <= ts->nKeys; j++)
+        {
+            removePlayersByCountryHelper(ts->childs[j], country, t);
+        }
+    }
+    if (ts == NULL)
+    {
+        printf("The player database is empty.\n");
+        return;
+    }
+
+    removePlayersByCountryHelper(ts, country, t);
+}
+
 void displayMenu()
 {
     printf("1. Print Retired Players & Total Number of Retired Players with Titles\n"); // A
@@ -271,8 +306,7 @@ void displayMenu()
     printf("9. Quit\n");
     printf("Enter your choice (1-9): ");
 }
-
-void handleMenu(TS *ts)
+void handleMenu(TS *ts, int t)
 {
     int choice;
     do
@@ -302,14 +336,11 @@ void handleMenu(TS *ts)
             playerWithFourStreaks(ts, false);
             break;
         case 7:
-        {
-            printf("Yet to be implemented.\n");
-            // printf("Enter the country to remove active players (format should be = [country]): ");
-            //  char country[50];
-            //  scanf("%s", country);
-            //  ts = removeActivePlayersByCountry(ts, country);
+            printf("Enter the country to remove active players (format should be = [country]): ");
+            char country[50];
+            scanf("%s", country);
+            removeActivePlayersByCountry(ts, country, t);
             break;
-        }
         case 8:
         {
             printActiveCompatriotsWithOneTitleAndSameAge(ts);
@@ -331,20 +362,21 @@ void handleMenu(TS *ts)
 int main()
 {
     // Initialize
-    int t = 2; // minimum degree of the tree
+    int t = 3; // minimum degree of the tree
     TS *ts = initialize();
     addDataOne(&ts, t); // initialize the tree with the data from jog_atuais.txt
     addDataTwo(&ts, t); // initialize the tree with the data from era_aberta_grand_slams.txt
 
     // Main
-    printf("---- Welcome to Tennis Stats! ----\n");
-    handleMenu(ts);
+    printf("\n---- Welcome to Tennis Stats! ----\n\n");
+    handleMenu(ts, t);
     printf("Thanks for using Tennis Stats!\n");
 
     // Extra
     // printf("%d", countAllPlayers(ts));
 
     // Terminate
-    // freeAllPlayers(ts);
+    freeAllPlayers(ts);
+    ts = NULL;
     return 0;
 }
