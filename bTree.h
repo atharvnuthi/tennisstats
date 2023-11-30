@@ -284,12 +284,6 @@ TS *freeTS(TS *ts)
             for (int i = 0; i <= ts->nKeys; i++)
                 freeTS(ts->childs[i]);
         }
-        for (int i = 0; i < ts->nKeys; i++)
-        {
-            free(ts->aKeys[i]->name);
-            free(ts->aKeys[i]->country);
-            free(ts->aKeys[i]);
-        }
         free(ts->aKeys);
         free(ts->childs);
         free(ts);
@@ -299,12 +293,6 @@ TS *freeTS(TS *ts)
 
 TS *freeTSRemove(TS *ts)
 {
-    for (int i = 0; i < ts->nKeys; ++i)
-    {
-        free(ts->aKeys[i]->name);
-        free(ts->aKeys[i]->country);
-        free(ts->aKeys[i]);
-    }
     free(ts->aKeys);
     free(ts->childs);
     free(ts);
